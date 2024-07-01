@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通行明细</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            /* background-color: white; */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            height: 100%;
+            max-width: 400px;
+            text-align: center;
+            padding: 0;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .header {
+            font-size: 1.5em;
+            margin: 20px;
+        }
+
+        .details {
+            background-color: #3b8bd1;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .details .left {
+            text-align: left;
+        }
+
+        .details .name {
+            font-size: 2em;
+            margin: 0;
+        }
+
+        .details .info {
+            font-size: 0.9em;
+            margin: 0;
+        }
+
+        .details .right {
+            font-size: 2em;
+        }
+
+        .content {
+            padding: 20px;
+            margin: 10px;
+            background-color: white;
+        }
+
+        .content-detail {
+            margin: 10px;
+        }
+
+        .phone-detail {
+            text-align: left;
+            padding-left: 40px;
+        }
+
+
+        .footer {
+            font-size: 0.8em;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .current-time {
+            font-size: 1.5em;
+        }
+
+        #qrcode img {
+            width: 300px;
+            height: 300px;
+            background-color: green;
+            filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const formattedTime = `${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}`;
+            document.getElementById('current-time').innerText = formattedTime;
+        }
+        setInterval(updateTime, 1000);
+
+        window.onload = function () {
+            updateTime();
+            setInterval(updateTime, 1000);
+
+        };
+    </script>
+</head>
+
+<body onload="updateTime()">
+    <div class="container">
+        <div class="details">
+            <div class="left">
+                <p class="name">马启刚</p>
+                <p class="info" style="margin-top: 10px;">C398120
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;技術員</p>
+                <p class="info" style="margin-top: 10px;">NCM0512-IE2-白班</p>
+            </div>
+            <div class="right">2-096</div>
+        </div>
+        <div class="content">
+            <div class="content-detail">
+                <p class="current-time" id="current-time"></p>
+                <div class="phone-detail">
+                    <p>类型: 手机</p>
+                    <p>型号: apple</p>
+                </div>
+                <div class="address-detail">
+                    <p>2廠2樓車間刷卡立柱進</p>
+                    <p class="red-text">2024/06/22 - 2024/9/21</p>
+                </div>
+                <div class="qr-code">
+                    <div id="qrcode"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 生成二维码
+        function generateQRCode() {
+            var qr = qrcode(10, 'M');
+            qr.addData('https://example.com/employee/C391224');
+            qr.make();
+            var qrImage = qr.createSvgTag({
+                scalable: true,
+                margin: 4,
+                cellSize: 4,
+                fill: {
+                    dark: "#009900", // 二维码颜色设为绿色
+                    light: "#ffffff" // 背景颜色保持白色
+                }
+            });
+            document.getElementById('qrcode').innerHTML = qrImage;
+             // 修改SVG内容颜色
+             var svg = document.getElementById('qrcode').querySelector('svg');
+            var paths = svg.querySelectorAll('path');
+            paths.forEach(function (path) {
+                path.setAttribute('fill', '#009900'); // 设置二维码颜色为绿色
+            });
+        }
+
+        generateQRCode();
+    </script>
+</body>
+
+</html>
